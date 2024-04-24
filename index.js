@@ -49,8 +49,26 @@ app.get('/bruxos/:id', async (req, res) => {
 app.post('/bruxos', async (req, res) => {
     try {
         const { nome, idade, genero, habilidade, casa, status_sangue, patrono } = req.body;
+
+        if (status_sangue !== 'puro' && status_sangue !== 'mestiço' && status_sangue !== 'trouxa') {
+            res.status(400).send({ mensagem: 'erro ao registrar bruxo. Utilize apenas puro, mestiço ou trouxa para o status_sangue.' });
+            
+        }
+        if (idade < 11 && idade > 18){
+            res.status(400).send({ mensagem: 'erro ao registrar bruxo. Você não pode ser aluno com menos de 11 anos ou mais de 18.' });
+        }
+        if (casa !== 'grifinória' && casa !== 'sonserina' && casa !== 'lufa-lufa' && casa !== 'corvinal') {
+            res.status(400).send({ mensagem: 'erro ao registrar bruxo. Você pode escolher apenas entre as 4 casas de hogwarts (grifinória, sonserina, lufa-lufa ou corvinal).' });
+        }
+        if (genero !== 'masculino' && genero !== 'feminino' && genero !== 'outro') {
+            res.status(400).send({ mensagem: 'erro ao registrar bruxo. Utilize apenas masculino, feminino ou outro para o genero.' });
+        }
+
         await pool.query('INSERT INTO bruxos (nome, idade, genero, habilidade, casa, status_sangue, patrono) VALUES ($1, $2, $3, $4, $5, $6, $7)', 
         [nome, idade, genero, habilidade, casa, status_sangue, patrono]);
+
+        res.status(201).send({ mensagem: 'bruxo registrado com sucesso' });
+        
     } catch (error) {
         console.error('erro ao registrar bruxo');
         res.status(500).send({ mensagem: 'erro interno ao registrar bruxo' });
@@ -187,8 +205,23 @@ app.get('/casas/:id', async (req, res) => {
 
 app.post('/casas', async (req, res) => {
     try {
+        
         const { nome, cor, animal } = req.body;
+
+        if (nome !== 'grifinoria' && nome !== 'sonserina' && nome !== 'lufalufa' && nome !== 'corvinal') {
+            res.status(500).send({ mensagem: 'erro ao registrar casa. Utilize apenas as 4 casas de hogwarts (grifinória, sonserina, lufa-lufa ou corvinal).' });
+        }
+        if (cor !== 'vermelho' && cor !== 'amarelo' && cor !== 'azul' && cor !== 'verde') {
+            res.status(500).send({ mensagem: 'erro ao registrar casa. Utilize apenas as cores das casas de hogwarts (vermelho, verde, amarelo ou azul).' });
+        }
+        if (animal !== 'leao' && animal !== 'serpente' && animal !== 'texugo' && animal !== 'corvo') {
+            res.status(500).send({ mensagem: 'erro ao registrar casa. Utilize apenas os animais das casas de hogwarts (leão, serpente, texugo ou corvo).' });
+        }
+
         await pool.query('INSERT INTO casas (nome, cor, animal) VALUES ($1, $2, $3)', [nome, cor, animal]);
+
+        res.status(201).send({ mensagem: 'casa de hogwarts registrada com sucesso' });
+     
     } catch (error) {
         console.error('erro ao registrar a casa de hogwarts');
         res.status(500).send({ mensagem: 'erro interno ao registrar a casa de hogwarts' });
@@ -221,3 +254,12 @@ app.delete('/casas/:id', async (req, res) => {
     }
 });
 // ----------------------------------------------------------------------------
+// informações do servidor
+app.get('/', (req, res) => {
+    res.send('servidor funcionando!');
+});
+
+
+app.listen(port, () => {
+    console.log(`Servidor rodando na porta ${port}`);
+});
