@@ -67,7 +67,7 @@ app.post('/bruxos', async (req, res) => {
         await pool.query('INSERT INTO bruxos (nome, idade, genero, habilidade, casa, status_sangue, patrono) VALUES ($1, $2, $3, $4, $5, $6, $7)', 
         [nome, idade, genero, habilidade, casa, status_sangue, patrono]);
 
-        res.status(201).send({ mensagem: 'bruxo registrado com sucesso' });
+        res.status(200).send({ mensagem: 'bruxo registrado com sucesso' });
         
     } catch (error) {
         console.error('erro ao registrar bruxo');
@@ -83,6 +83,7 @@ app.put('/bruxos/:id', async (req, res) => {
         const { nome, idade, genero, habilidade, casa, status_sangue, patrono } = req.body;
         await pool.query('UPDATE bruxos SET nome = $1, idade = $2, genero = $3, habilidade = $4, casa = $5, status_sangue = $6, patrono = $7 WHERE id = $8', 
         [nome, idade, genero, habilidade, casa, status_sangue, patrono, id]);
+        res.status(200).send({ mensagem: 'bruxo atualizado com sucesso' });
     } catch (error) {
         console.error('erro ao atualizar bruxo');
         res.status(500).send({ mensagem: 'erro interno ao atualizar bruxo' });
@@ -138,6 +139,7 @@ app.post('/varinhas', async (req, res) => {
     try {
         const { material, comprimento, nucleos, data_fab } = req.body;
         await pool.query('INSERT INTO varinhas (material, comprimento, nucleos, data_fab) VALUES ($1, $2, $3, $4)',[material, comprimento, nucleos, data_fab]);
+        res.status(200).send({ mensagem: 'varinha registrada com sucesso' });
     } catch (error) {
         console.error('erro ao registrar varinha');
         res.status(500).send({ mensagem: 'erro interno ao registrar varinha' });
@@ -152,6 +154,7 @@ app.put('/varinhas/:id', async (req, res) => {
         const { material, comprimento, nucleos, data_fab } = req.body;
         await pool.query('UPDATE varinhas SET material = $1, comprimento = $2, nucleos = $3, data_fab = $4 WHERE id = $5', 
         [material, comprimento, nucleos, data_fab, id]);
+        res.status(200).send({ mensagem: 'varinha alterada com sucesso' });
     } catch (error) {
         console.error('erro ao atualizar varinha');
         res.status(500).send({ mensagem: 'erro interno ao atualizar varinha' });
@@ -220,7 +223,7 @@ app.post('/casas', async (req, res) => {
 
         await pool.query('INSERT INTO casas (nome, cor, animal) VALUES ($1, $2, $3)', [nome, cor, animal]);
 
-        res.status(201).send({ mensagem: 'casa de hogwarts registrada com sucesso' });
+        res.status(200).send({ mensagem: 'casa de hogwarts registrada com sucesso' });
      
     } catch (error) {
         console.error('erro ao registrar a casa de hogwarts');
@@ -235,6 +238,7 @@ app.put('/casas/:id', async (req, res) => {
         const { id } = req.params;
         const { nome, cor, animal } = req.body;
         await pool.query('UPDATE casas SET nome = $1, cor = $2, animal = $3 WHERE id = $4', [nome, cor, animal, id]);
+        res.status(200).send({ mensagem: 'casa de hogwarts atualizada com sucesso' });
     } catch (error) {
         console.error('erro ao atualizar a casa de hogwarts');
         res.status(500).send({ mensagem: 'erro interno ao atualizar a casa de hogwarts' });
