@@ -4,7 +4,6 @@
 - Ao abrir o projeto pelo VSCode, rode os comandos:
 - *npm install -y*
 - *npm install nodemon*
-- *npm install axios*
 - *npm run dev*
 
 Assim, o código será hospedado em um link localhost.
